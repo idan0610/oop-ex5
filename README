@@ -1,0 +1,76 @@
+idan0610
+
+
+
+
+=============================
+=      File description     =
+=============================
+MyFileScript.java - The main class running the whole program.
+Filter.java - Interface for the filters.
+FilterFactory.java - Initiates the relevant filter requested.
+GreaterThanFilter.java - The Greater Than filter.
+BetweenFilter.java - The Between Filter.
+SmallerThanFilter.java - The Smaller Then Filter.
+FileFilter.java - The File Filter.
+ContainsFilter.java - The Contains Filter.
+PrefixFilter.java - The Prefix Filter.
+SuffixFilter.java - The Suffix Filter.
+WritableFilter.java - The Writable Filter.
+ExecutableFilter.java - The Executable Filter.
+HiddenFilter.java - The Hidden Filter.
+AllFilter.java - The All filter.
+NegFilter.java - Initiates the NOT filter of the given filter.
+WrongFilterFormatException.java - Exception when the filter command format is wrong.
+Manager.java - Manage the process of the program running. Calls the parser, filter and order the files.
+Order.java - Interface for the orders.
+OrderFactory.java - Initiates the relevant order requested.
+AbsOrder.java - The Abs Order.
+TypeOrder.java - The Type Order.
+SizeOrder.java - The Size Order.
+RevereseOrder.java - Initiates the REVERSE order of the given order.
+WrongOrderFormatException.java - Exception when the order command format is wrong.
+Parser.java - The Parser used to read the command file and initiates the Section objects.
+WrongFormatCommandsException.java - Exception when the command file format is wrong.
+Section.java - Represents a section of the command file, composes its filter and order.
+QUESTIONS - Questions and answers for course material in weeks 8-9.
+
+
+=============================
+=          Design           =
+=============================
+The main method in MyFilterScript calls the manager with the given source directory and command files given
+as command arguments. The manager uses the parser to parse the file and create Section objects for each
+section on the command file. The parser uses FilterFactory and OrderFactory to initiate the Filter and Order
+respectively of each section. All the filters and orders are located each on their own package, and the same
+for the manager, the parser, the Section class and MyFileScript.
+After the manager get the Section objects, it traverses the files on the source directory, filter and order
+them according to each section's filter and order.
+
+
+=============================
+=  Implementation details   =
+=============================
+The FilterFactory and OrderFactory are implements of the Factory Design Pattern and are used to initiate the
+relevant Filter and Order objects respectively. The NegFilter and ReverseOrder uses the Decorator Design
+Pattern to initiate a filter/order object and add new functionality to the filter/order operation (all files
+NOT passes the filter and all files sorted in reverse order of the order respectively).
+The FilterFactory and OrderFactory may throw an exception indicating there is something wrong on the
+filter/order command format in the command file (WrongFilterFormatException and WrongOrderFormatException). 
+The parser catch these 2 exception if thrown, and initiate the default filter/order (all filter/abs order) 
+instead. The parser itself may throw an exception (WrongFormatCommandsException) when the command file format
+is wrong (means missing FILTER/ORDER sub-sections or FILTER/ORDER misspelled). In that case, the main method
+in MyFileScript catch this exception, as well as any other exception may be thrown on program running
+(like IOException and etc) and stop the program's running with "ERROR" message.
+I chose for each section to store the matched files of each filter in ArrayList collection. The reason for
+that is that after all the matched files are found, they are need to be sorted by the order only once (using
+Collections.sort) and after that, the ArrayList reset for the next section.
+Using other collection, like LinkedList may be less efficient for sorting because the index access are less
+efficient (O(n) instead O(1) for ArrayList). There is no need for efficient remove operation in this program.
+
+
+=============================
+=    Answers to questions   =
+=============================
+None
+
